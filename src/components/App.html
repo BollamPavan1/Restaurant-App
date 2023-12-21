@@ -1,0 +1,104 @@
+[0:22 pm, 21/12/2023] BOLLAM: /* Reset some default styles */ body, h1, h2, p,
+ul, li { margin: 0; padding: 0; } /* Set a background color and font for the
+whole app */ body { background-color: #f5f5f5; font-family: 'Arial', sans-serif;
+} /* Style the header with a background color, padding, and text color */ header
+{ background-color: #333; padding: 10px; color: #fff; text-align: center; } /*
+Style the navigation menu with a horizontal list and some basic styling */ nav {
+display: flex; justify-content: center; background-color: #444; padding: 10px; }
+nav ul { list-style-type: none; display: flex; } nav li { margin-right: 20px; }
+nav a { text-decoration: none; color: #fff; font-weight: bold; } /* Style the
+main content area with some padding and a border */ main { padding: 20px;
+border: 1px solid #ddd; } /* Style individual restaurant items in a list */
+.restaurant-item { background-color: #fff; padding: 10px; margin-bottom: 10px;
+border: 1px solid #ddd; } /* Style a button with a background color, text color,
+and padding */ button { background-color: #4caf50; color: #fff; padding: 10px
+20px; border: none; cursor: pointer; } /* Style form elements for a clean look
+*/ form { display: flex; flex-direction: column; } form label { margin-bottom:
+5px; } form input, form select { margin-bottom: 10px; padding: 8px; border: 1px
+solid #ddd; } /* Add some spacing to the footer */ footer { margin-top: 20px; }
+[0:35 pm, 21/12/2023] BOLLAM: <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Page</title>
+  </head>
+  <body>
+    <!-- Elements to display menu categories -->
+    <div id="menuCategories"></div>
+
+    <!-- Elements for "Salads and Soup" category -->
+    <h1 id="dishName"></h1>
+    <p id="dishCurrencyAndPrice"></p>
+    <p id="dishDescription"></p>
+    <p id="dishCalories"></p>
+    <img id="dishImage" alt="Dish Image" />
+
+    <!-- Elements for dish quantity control -->
+    <p id="dishQuantity">0</p>
+    <button onclick="decrement()">-</button>
+    <button onclick="increment()">+</button>
+
+    <script>
+      // Simulated API response
+      const apiResponse = {
+          table_menu_list: [
+              { menu_category: "Salads and Soup" },
+              // Add more menu categories as needed
+          ],
+          category_dishes: [
+              {
+                  dish_name: "Sample Dish",
+                  dish_currency: "$",
+                  dish_price: 10.99,
+                  dish_description: "Lorem ipsum dolor sit amet.",
+                  dish_calories: 300,
+                  dish_image: "path/to/image.jpg",
+                  // Add more dish details as needed
+              },
+              // Add more dishes for different categories
+          ],
+      };
+
+      // Display menu categories
+      const menuCategoriesContainer = document.getElementById("menuCategories");
+      apiResponse.table_menu_list.forEach(category => {
+          const button = document.createElement("button");
+          button.textContent = category.menu_category;
+          button.onclick = () => showCategoryDetails(category.menu_category);
+          menuCategoriesContainer.appendChild(button);
+      });
+
+      // Display details for a specific category
+      function showCategoryDetails(category) {
+          // Retrieve the dishes for the selected category
+          const selectedCategoryDishes = apiResponse.category_dishes.filter(dish => dish.menu_category === category);
+
+          // Display details for the first dish (you may adjust this based on your needs)
+          const selectedDish = selectedCategoryDishes[0];
+          document.getElementById("dishName").textContent = selectedDish.dish_name;
+          document.getElementById("dishCurrencyAndPrice").textContent = ${selectedDish.dish_currency}${selectedDish.dish_price.toFixed(2)};
+          document.getElementById("dishDescription").textContent = selectedDish.dish_description;
+          document.getElementById("dishCalories").textContent = Calories: ${selectedDish.dish_calories};
+          document.getElementById("dishImage").src = selectedDish.dish_image;
+
+          // Reset dish quantity
+          document.getElementById("dishQuantity").textContent = "0";
+      }
+
+      // Dish quantity control
+      function increment() {
+          const quantityElement = document.getElementById("dishQuantity");
+          quantityElement.textContent = String(Number(quantityElement.textContent) + 1);
+      }
+
+      function decrement() {
+          const quantityElement = document.getElementById("dishQuantity");
+          const currentQuantity = Number(quantityElement.textContent);
+          if (currentQuantity > 0) {
+              quantityElement.textContent = String(currentQuantity - 1);
+          }
+      }
+    </script>
+  </body>
+</html>
